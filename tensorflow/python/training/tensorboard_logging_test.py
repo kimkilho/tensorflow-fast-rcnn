@@ -1,4 +1,4 @@
-# Copyright 2015 Google Inc. All Rights Reserved.
+# Copyright 2015 The TensorFlow Authors. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ class EventLoggingTest(tf.test.TestCase):
 
   def setUp(self):
     self._work_dir = tempfile.mkdtemp(dir=self.get_temp_dir())
-    self._sw = tf.train.SummaryWriter(self._work_dir)
+    self._sw = tf.summary.FileWriter(self._work_dir)
     tensorboard_logging.set_summary_writer(self._sw)
     self.addCleanup(shutil.rmtree, self._work_dir)
 

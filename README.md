@@ -9,3 +9,4 @@ I've also created some demos and test scripts, using Ipython/Jupyter. An overall
 Installation is the same as normal Tensorflow - follow the [instructions](https://www.tensorflow.org/versions/r0.10/get_started/os_setup.html#installing-from-sources) for building from source (but clone this repository instead of the main Tensorflow one). Build the ROI pooling op using the 'build_user_op.sh' script [provided](https://github.com/zplizzi/tensorflow-fast-rcnn/blob/master/build_user_op.sh). 
 
 A demo of the whole Fast-RCNN network is coming soon. For now, you can see an initial version of it [here](https://github.com/zplizzi/cs80/blob/master/fast_rcnn_tensorflow-vgg-med-train.ipynb). It has some dependencies on other of my helper libraries that I'm working to remove. The current demo is also not a full R-CNN network - I've simplified it a bit to show just the novel parts (the roi pooling layer). 
+
