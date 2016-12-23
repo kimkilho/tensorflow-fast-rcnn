@@ -1,5 +1,6 @@
 # array_ops
 BatchToSpace
+BroadcastArgs
 BroadcastGradientArgs
 ConcatOffset
 Concat
@@ -15,6 +16,7 @@ Pack
 Pad
 Placeholder
 RefIdentity
+Reverse
 SpaceToBatch
 Split
 SplitV
@@ -183,6 +185,7 @@ BatchIFFT
 BatchIFFT2D
 BatchIFFT3D
 Complex
+ComplexAbs
 Conj
 FloorDiv
 FloorMod
@@ -259,6 +262,7 @@ SdcaShrinkL1
 
 # state_ops
 Variable
+VariableV2
 TemporaryVariable
 DestroyTemporaryVariable
 
@@ -288,3 +292,7 @@ Fact
 
 # training_ops
 # (None)
+
+# word2vec deprecated ops
+NegTrain
+Skipgram

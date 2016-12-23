@@ -2,7 +2,7 @@
 TF_INC=$(python -c 'import tensorflow as tf; print(tf.sysconfig.get_include())')
 
 # This should be edited to the path of your CUDA install
-CUDA_PATH="/usr/local/cuda-8.0/"
+CUDA_PATH="/usr/local/cuda/"
 
 # Build the CUDA kernel
 nvcc -std=c++11 -c -o roi_pooling_op.cu.o roi_pooling_op.cu.cc \

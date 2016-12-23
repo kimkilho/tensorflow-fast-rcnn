@@ -2,15 +2,14 @@
 # TensorFlow SavedModel.
 
 package(
-    default_visibility = [
-        "//tensorflow/contrib/learn:__subpackages__",
-        "//tensorflow/python/saved_model:__subpackages__",
-    ],
+    default_visibility = ["//visibility:public"],
 )
 
 licenses(["notice"])  # Apache 2.0
 
 exports_files(["LICENSE"])
+
+load("//tensorflow:tensorflow.bzl", "py_test")
 
 py_library(
     name = "constants",
@@ -38,9 +37,11 @@ py_library(
         ":constants",
         "//tensorflow/core:protos_all_py",
         "//tensorflow/python:framework_for_generated_wrappers",
+        "//tensorflow/python:lib",
         "//tensorflow/python:platform",
         "//tensorflow/python:training",
         "//tensorflow/python:util",
+        "//tensorflow/python:variables",
     ],
 )
 
@@ -51,8 +52,11 @@ py_library(
     deps = [
         ":constants",
         "//tensorflow/core:protos_all_py",
+        "//tensorflow/python:framework_for_generated_wrappers",
+        "//tensorflow/python:lib",
         "//tensorflow/python:platform",
         "//tensorflow/python:training",
+        "//tensorflow/python:util",
     ],
 )
 
@@ -62,32 +66,45 @@ py_library(
     srcs_version = "PY2AND3",
     deps = [
         ":constants",
+        "//tensorflow/python:control_flow_ops",
         "//tensorflow/python:data_flow_ops",
+        "//tensorflow/python:framework_for_generated_wrappers",
         "//tensorflow/python:platform",
+        "//tensorflow/python:variables",
     ],
 )
 
 py_test(
     name = "saved_model_test",
     size = "small",
-    srcs = [
-        "saved_model_test.py",
-    ],
+    srcs = ["saved_model_test.py"],
+    data = ["//tensorflow/cc/saved_model:saved_model_half_plus_two"],
     srcs_version = "PY2AND3",
+    tags = ["manual"],
     visibility = ["//visibility:private"],
     deps = [
         ":builder",
+        ":constants",
         ":loader",
         ":main_op",
+        ":signature_def_utils",
         ":tag_constants",
         ":utils",
-        "//tensorflow:tensorflow_py",
         "//tensorflow/core:protos_all_py",
+        "//tensorflow/python:client",
+        "//tensorflow/python:client_testlib",
+        "//tensorflow/python:control_flow_ops",
+        "//tensorflow/python:errors",
         "//tensorflow/python:framework",
         "//tensorflow/python:framework_for_generated_wrappers",
+        "//tensorflow/python:lib",
+        "//tensorflow/python:math_ops",
         "//tensorflow/python:platform",
+        "//tensorflow/python:session",
+        "//tensorflow/python:state_ops",
         "//tensorflow/python:training",
         "//tensorflow/python:util",
+        "//tensorflow/python:variables",
     ],
 )
 
@@ -97,20 +114,21 @@ py_library(
     srcs_version = "PY2AND3",
     deps = [
         "//tensorflow/core:protos_all_py",
+        "//tensorflow/python:framework_for_generated_wrappers",
     ],
 )
 
 py_test(
     name = "utils_test",
     size = "small",
-    srcs = [
-        "utils_test.py",
-    ],
+    srcs = ["utils_test.py"],
     srcs_version = "PY2AND3",
     visibility = ["//visibility:private"],
     deps = [
         ":utils",
-        "//tensorflow:tensorflow_py",
+        "//tensorflow/python:array_ops",
+        "//tensorflow/python:client_testlib",
+        "//tensorflow/python:framework_for_generated_wrappers",
     ],
 )
 
@@ -128,14 +146,16 @@ py_library(
 py_test(
     name = "signature_def_utils_test",
     size = "small",
-    srcs = [
-        "signature_def_utils_test.py",
-    ],
+    srcs = ["signature_def_utils_test.py"],
     srcs_version = "PY2AND3",
     visibility = ["//visibility:private"],
     deps = [
+        ":signature_constants",
         ":signature_def_utils",
-        "//tensorflow:tensorflow_py",
+        ":utils",
+        "//tensorflow/python:array_ops",
+        "//tensorflow/python:client_testlib",
+        "//tensorflow/python:framework_for_generated_wrappers",
     ],
 )
 
