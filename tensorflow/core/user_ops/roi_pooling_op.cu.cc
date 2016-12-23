@@ -44,17 +44,21 @@ __global__ void RoiPoolingGpuKernel(   const float* data_array,
         int roi_start = image_start + roi_offset;
         
         // Determine pooling kernel size
-        // TODO more robust integer division
-        // TODO handle size 0 case
-        int kernel_width = roi_width / pooling_width;
-        int kernel_height = roi_height / pooling_height;
+        // FIXED: more robust integer division
+        // FIXED: handle size 0 case
+        float kernel_width = static_cast<float>(roi_width) / static_cast<float>(pooling_width);
+        float kernel_height = static_cast<float>(roi_height) / static_cast<float>(pooling_height);
         
         // Iterate through each pooling region
         for (int rx = 0; rx < pooling_width; ++rx) {
             for (int ry = 0; ry < pooling_height; ++ry) {
+                int hstart = static_cast<int>(floor(static_cast<float>(ry) * kernel_height));
+                int wstart = static_cast<int>(floor(static_cast<float>(rx) * kernel_width));
+                int hend = static_cast<int>(floor(static_cast<float>(ry + 1) * kernel_height));
+                int wend = static_cast<int>(floor(static_cast<float>(rx + 1) * kernel_width));
                 
                 // Get the offset of the start of this pooling region
-                int region_start = roi_start + (rx * kernel_width) + (ry * kernel_height) * image_width;
+                // int region_start = roi_start + (rx * kernel_width) + (ry * kernel_height) * image_width;
                 
                 float current_max = 0;
                 int argmax = -1;
@@ -62,11 +66,12 @@ __global__ void RoiPoolingGpuKernel(   const float* data_array,
                 //LOG(INFO) << "Kernel Dims: " << kernel_width << "by " << kernel_height;
                 
                 // Iterate through each pixel in the pooling region
-                for (int px = 0; px < kernel_width; ++px) {
-                    for (int py = 0; py < kernel_height; ++py) {
+                for (int px = wstart; px < wend; ++px) {
+                    for (int py = hstart; py < hend; ++py) {
 
                         // Get location of pixel in image
-                        int pixel = region_start + px + py * image_width;
+                        // int pixel = region_start + px + py * image_width;
+                        int pixel = roi_start + px + py * image_width;
                         
                         // Get value at this location
                         float value_at_index = data_array[pixel];
